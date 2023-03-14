@@ -1,7 +1,7 @@
 import colors from "tailwindcss/colors";
 
 export const LINEAR = {
-    OAUTH_ID: process.env.NEXT_PUBLIC_LINEAR_OAUTH_ID,
+    OAUTH_ID: "a9a25199db39bbcdde7d7e7a1fc12bca",
     OAUTH_URL: "https://linear.app/oauth/authorize",
     TOKEN_URL: "https://api.linear.app/oauth/token",
     SCOPES: ["write"],
@@ -26,7 +26,7 @@ export const SHARED = {
 };
 
 export const GITHUB = {
-    OAUTH_ID: process.env.NEXT_PUBLIC_GITHUB_OAUTH_ID,
+    OAUTH_ID: "c985b4c2b5a1145871c6",
     OAUTH_URL: "https://github.com/login/oauth/authorize",
     TOKEN_URL: "https://github.com/login/oauth/access_token",
     SCOPES: ["repo", "write:repo_hook", "read:user", "user:email"],
@@ -49,8 +49,8 @@ export const TIMEOUTS = {
 
 export const GENERAL = {
     APP_NAME: "Linear-GitHub Sync",
-    APP_URL: "https://synclinear.com",
-    CONTRIBUTE_URL: "https://github.com/calcom/linear-to-github",
+    APP_URL: "https://synclinearcom-production-da98.up.railway.app",
+    CONTRIBUTE_URL: "https://github.com/tablelandnetwork/linear-to-github",
     IMG_TAG_REGEX: /<img.*src=[\'|\"| ]?https?:\/\/(.*?)[\'|\"| ].*\/?>/g,
     LOGIN_KEY: "login",
     SYNCED_ITEMS: [
