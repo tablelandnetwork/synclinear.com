@@ -27,7 +27,7 @@ export const clearURLParams = () => {
 
 export const encrypt = (text: string): { hash: string; initVector: string } => {
     const algorithm = "aes-256-ctr";
-    const secret = process.env.ENCRYPTION_KEY;
+    const secret = Buffer.from(process.env.ENCRYPTION_KEY, 'base64');
 
     const initVector = randomBytes(16);
     const cipher = createCipheriv(algorithm, secret, initVector);
@@ -41,7 +41,7 @@ export const encrypt = (text: string): { hash: string; initVector: string } => {
 
 export const decrypt = (content: string, initVector: string): string => {
     const algorithm = "aes-256-ctr";
-    const secret = process.env.ENCRYPTION_KEY;
+    const secret = Buffer.from(process.env.ENCRYPTION_KEY, 'base64');
 
     const decipher = createDecipheriv(
         algorithm,
