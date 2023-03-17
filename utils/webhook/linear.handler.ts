@@ -79,13 +79,20 @@ export async function linearWebhookHandler(
         GitHubRepo: { repoName: repoFullName, repoId }
     } = sync;
 
-    const linearKey = process.env.LINEAR_API_KEY
-        ? process.env.LINEAR_API_KEY
-        : decrypt(linearApiKey, linearApiKeyIV);
+    let linear: LinearClient;
+    let linearKey: string;
 
-    const linear = new LinearClient({
-        apiKey: linearKey
-    });
+    if (process.env.LINEAR_API_KEY) {
+        linearKey = process.env.LINEAR_API_KEY;
+        linear = new LinearClient({
+            apiKey: linearKey
+        });
+    } else {
+        linearKey = decrypt(linearApiKey, linearApiKeyIV);
+        linear = new LinearClient({
+            accessToken: linearKey
+        });
+    }
 
     const ticketName = `${data.team?.key ?? ""}-${data.number}`;
 

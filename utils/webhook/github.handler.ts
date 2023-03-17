@@ -8,7 +8,7 @@ import {
     replaceImgTags,
     skipReason
 } from "../index";
-import { LinearClient } from "@linear/sdk";
+import { LinearClient, LinearClientOptions } from "@linear/sdk";
 import { replaceMentions, upsertUser } from "../../pages/api/utils";
 import {
     Issue,
@@ -108,17 +108,25 @@ export async function githubWebhookHandler(
         GitHubRepo: { repoName }
     } = sync;
 
-    let linearKey = process.env.LINEAR_API_KEY
-        ? process.env.LINEAR_API_KEY
-        : decrypt(linearApiKey, linearApiKeyIV);
+    let linear: LinearClient;
+    let linearKey: string;
 
     if (anonymousUser) {
         linearKey = process.env.LINEAR_APPLICATION_ADMIN_KEY;
+        linear = new LinearClient({
+            apiKey: linearKey
+        });
+    } else if (process.env.LINEAR_API_KEY) {
+        linearKey = process.env.LINEAR_API_KEY;
+        linear = new LinearClient({
+            apiKey: linearKey
+        });
+    } else {
+        linearKey = decrypt(linearApiKey, linearApiKeyIV);
+        linear = new LinearClient({
+            accessToken: linearKey
+        });
     }
-
-    const linear = new LinearClient({
-        apiKey: linearKey
-    });
 
     const githubKey = process.env.GITHUB_API_KEY
         ? process.env.GITHUB_API_KEY
@@ -252,7 +260,7 @@ export async function githubWebhookHandler(
         modifiedDescription = replaceImgTags(modifiedDescription);
 
         await linear
-            .issueUpdate(syncedIssue.linearIssueId, {
+            .updateIssue(syncedIssue.linearIssueId, {
                 title: title.join(`${syncedIssue.linearIssueNumber}]`),
                 description: modifiedDescription
             })
@@ -280,7 +288,7 @@ export async function githubWebhookHandler(
         }
 
         await linear
-            .issueUpdate(syncedIssue.linearIssueId, {
+            .updateIssue(syncedIssue.linearIssueId, {
                 stateId:
                     issue.state_reason === "not_planned"
                         ? canceledStateId
@@ -327,7 +335,7 @@ export async function githubWebhookHandler(
             select: { linearUserId: true }
         });
 
-        const createdIssueData = await linear.issueCreate({
+        const createdIssueData = await linear.createIssue({
             id: generateLinearUUID(),
             title: issue.title,
             description: `${modifiedDescription ?? ""}`,
@@ -479,7 +487,7 @@ export async function githubWebhookHandler(
         if (!assignee?.id) {
             // Remove assignee
 
-            const response = await linear.issueUpdate(
+            const response = await linear.updateIssue(
                 syncedIssue.linearIssueId,
                 { assigneeId: null }
             );
@@ -507,7 +515,7 @@ export async function githubWebhookHandler(
                 return reason;
             }
 
-            const response = await linear.issueUpdate(
+            const response = await linear.updateIssue(
                 syncedIssue.linearIssueId,
                 { assigneeId: user.linearUserId }
             );
@@ -533,7 +541,7 @@ export async function githubWebhookHandler(
 
         const { milestone } = issue;
         if (milestone === null) {
-            const response = await linear.issueUpdate(
+            const response = await linear.updateIssue(
                 syncedIssue.linearIssueId,
                 {
                     cycleId: null
@@ -589,7 +597,7 @@ export async function githubWebhookHandler(
             });
         }
 
-        const response = await linear.issueUpdate(syncedIssue.linearIssueId, {
+        const response = await linear.updateIssue(syncedIssue.linearIssueId, {
             cycleId: syncedMilestone.cycleId
         });
 
@@ -624,7 +632,7 @@ async function createLinearComment(
     modifiedComment: string,
     issue: Issue
 ) {
-    const comment = await linear.commentCreate({
+    const comment = await linear.createComment({
         id: generateLinearUUID(),
         issueId: syncedIssue.linearIssueId,
         body: modifiedComment ?? ""

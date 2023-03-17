@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@apollo/client': ^3.6.9
-  '@linear/sdk': ^1.22.0
+  '@linear/sdk': ^2.6.0
   '@next/eslint-plugin-next': ^13.0.6
   '@octokit/openapi-types': ^12.4.0
   '@octokit/webhooks-types': ^5.8.0
@@ -37,7 +37,7 @@ specifiers:
 
 dependencies:
   '@apollo/client': 3.6.9_onqnqwb3ubg5opvemcqf7c2qhy
-  '@linear/sdk': 1.22.0
+  '@linear/sdk': 2.6.0
   '@prisma/client': 3.15.2_prisma@3.15.2
   '@radix-ui/react-icons': 1.1.1_react@18.2.0
   '@radix-ui/react-tooltip': 1.0.2_nylzxt5ale4dsv666zkb25cgtm
@@ -69,7 +69,7 @@ devDependencies:
   postcss: 8.4.16
   prettier: 2.8.0
   prisma: 3.15.2
-  tailwindcss: 3.1.8
+  tailwindcss: 3.1.8_postcss@8.4.16
   typescript: 4.7.2
 
 packages:
@@ -184,8 +184,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@linear/sdk/1.22.0:
-    resolution: {integrity: sha512-QNWmtar3ZvxWmCdsAwpRU9EWHkxnopb8fsL/6JBvTiFyy4+DWRb9kW9s262njPy/Em07dU3FWSk8gcjQaoZ3kA==}
+  /@linear/sdk/2.6.0:
+    resolution: {integrity: sha512-L7Bsd5Ooa+RusZ6Y1yuzsq3NnrSOqHbhZHvdY+anNTOEtFPKonFCNeUdWXpBlyM21rzx7MWq+TfjtMo9dbxxPQ==}
     engines: {node: '>=12.x', yarn: 1.x}
     dependencies:
       '@graphql-typed-document-node/core': 3.1.1_graphql@15.8.0
@@ -2848,10 +2848,12 @@ packages:
     engines: {node: '>=0.10'}
     dev: false
 
-  /tailwindcss/3.1.8:
+  /tailwindcss/3.1.8_postcss@8.4.16:
     resolution: {integrity: sha512-YSneUCZSFDYMwk+TGq8qYFdCA3yfBRdBlS7txSq0LUmzyeqRe3a8fBQzbz9M3WS/iFT4BNf/nmw9mEzrnSaC0g==}
     engines: {node: '>=12.13.0'}
     hasBin: true
+    peerDependencies:
+      postcss: ^8.0.9
     dependencies:
       arg: 5.0.2
       chokidar: 3.5.3

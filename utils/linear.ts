@@ -339,7 +339,7 @@ export const inviteMember = async (
         getSyncFooter()
     ].join("\n");
 
-    linearClient.issueCreate({
+    linearClient.createIssue({
         title: `GitHub Sync — ${issueCreator.name}, please join our workspace`,
         description: message,
         teamId: teamId,
